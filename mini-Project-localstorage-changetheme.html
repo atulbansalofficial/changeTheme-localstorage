@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-Project-localstorage</title>
+    <style>
+        body {
+            height: 80vh;
+            width: 80wh;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        h1 {
+            color: chocolate;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 350px;
+            height: 122px;
+            background-color: rgb(238, 151, 37);
+            padding: 25px 50px;
+            border-radius: 60px;
+            box-shadow: 0px 0px 20px 10px rgb(14, 148, 63);
+
+        }
+
+        form {
+
+
+            zoom: 300%
+        }
+
+        #themeSelector {
+            padding: 2px;
+            color: rgb(60, 42, 19);
+            border: 0;
+            border-radius: 10px;
+            box-shadow: 2px 3px 8px 1px rgb(14, 148, 63);
+            outline: none;
+            background: none;
+            background-color: rgb(92, 165, 233);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Change Theme Using LocalStorage</h1>
+    <div class="container">
+        <form action="">
+            <select name="" id="themeSelector">
+                <option value="">Select a theme</option>
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+            </select>
+        </form>
+
+    </div>
+
+</body>
+<script>
+    const themeSelector = document.querySelector
+        ('#themeSelector');
+
+
+
+    const theme = localStorage.getItem("theme")
+    changeTheme(theme)
+   
+    // window.addEventListener('load', (e) => {
+    //     themeSelector.value=theme
+    // })
+    themeSelector.value=theme
+
+    // console.log(themeSelector);
+    themeSelector.addEventListener('change', (e) => {
+        console.log(e.target.value);
+        localStorage.setItem("theme", e.target.value)
+        changeTheme(e.target.value);
+    })
+    function changeTheme(theme) {
+        if (theme == 'dark') {
+
+            document.body.style.backgroundColor = "#202020"
+        } else if (theme == 'light') {
+
+            document.body.style.backgroundColor = "#A0A0A0"
+        } else {
+            document.body.style.backgroundColor = "#fff"
+        }
+    }
+    window.addEventListener('storage', (e) => {
+        console.log(e);
+        if (e.key === "theme") {
+            changeTheme(e.newValue)
+            themeSelector.value = e.newValue
+        }
+    })
+    //code snippet
+    //Error Handling
+    function storageAvailable(type) {
+        var storage;
+        try {
+            storage = window[type];
+            var x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch (e) {
+            return e instanceof DOMException && (
+                // everything except Firefox
+                e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === 'QuotaExceededError' ||
+                // Firefox
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                (storage && storage.length !== 0);
+        }
+    }
+    if (storageAvailable('localStorage')) {
+        // Yippee! We can use localStorage awesomeness
+        console.log("Yeppe!! working");
+
+    }
+    else {
+        // Too bad, no localStorage for us
+        console.log("OOPS!! Not working");
+    }
+
+
+
+
+</script>
+
+</html>
